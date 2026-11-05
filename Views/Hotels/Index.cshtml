@@ -1,0 +1,56 @@
+@model List<Hotel>
+@{
+    ViewData["Title"] = "Hoteles";
+}
+
+<h1>Hoteles</h1>
+<p>Hay @Model.Count hoteles.</p>
+
+<form method="get" asp-action="Index" class="row g-2 align-items-end mb-3">
+    <div class="col-md-5">
+        <label class="form-label" for="search">Nombre</label>
+        <input class="form-control" id="search" name="search" value="@ViewBag.Search" placeholder="Buscar por nombre" />
+    </div>
+
+    <div class="cold-md-4">
+        <label class="form-label" for="hotelType">Tipo de hotel</label>
+        <select class="form-select" id="hotelType" name="hotelType">
+            <option value="">Todos</option>
+            @foreach (var type in Enum.GetValues<HotelType>())
+                {
+                    <option value="@type" selected="@(type == ViewBag.HotelType)">@Html.DisplayFor(m => type)</option>
+                }
+        </select>
+    </div>
+
+    <div class="col-md-3">
+        <button class="btn btn-primary" type="submit">Filtrar</button>
+        <a class="btn btn-outline-secondary" asp-action="Index">Limpiar</a>
+    </div>
+</form>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Ciudad</th>
+            <th>Estrellas</th>
+            <th>Tipo</th>
+            <th>Precio medio</th>
+            <th>Activo</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var hotel in Model)
+        {
+            <tr>
+                <td><a asp-action="Details" asp-route-id="@hotel.Id">@hotel.Name</a></td>
+                <td>@hotel.City</td>
+                <td>@hotel.Stars</td>
+                <td>@Html.DisplayFor(m => hotel.HotelType)</td>
+                <td>@hotel.AveragePrice €</td>
+                <td>@(hotel.Active ? "Sí" : "No")</td>
+            </tr>
+        }
+    </tbody>
+</table>

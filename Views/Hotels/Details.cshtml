@@ -1,0 +1,59 @@
+@model HotelDetailsViewModel
+@{
+    ViewData["Title"] = Model.Hotel.Name;
+}
+
+<h1>@Model.Hotel.Name</h1>
+
+<dl class="row">
+    <dt class="col-sm-3">Ciudad</dt>
+    <dd class="col-sm-9">@Model.Hotel.City</dd>
+
+    <dt class="col-sm-3">Estrellas</dt>
+    <dd class="col-sm-9">@Model.Hotel.Stars</dd>
+
+    <dt class="col-sm-3">Tipo de hotel</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(m => m.Hotel.HotelType)</dd>
+
+    <dt class="col-sm-3">Precio medio</dt>
+    <dd class="col-sm-9">@Model.Hotel.AveragePrice €</dd>
+
+    <dt class="col-sm-3">Fecha de apertura</dt>
+    <dd class="col-sm-9">@Model.Hotel.OpeningDate?.ToString("dd/MM/yyyy")</dd>
+
+    <dt class="col-sm-3">Activo</dt>
+    <dd class="col-sm-9">@(Model.Hotel.Active ? "Sí" : "No")</dd>
+</dl>
+
+<h2 class="h4 mt-4">Habitaciones</h2>
+@if (Model.TotalRooms == 0)
+{
+    <p class="text-secondary">Este hotel todavía no tiene Habitaciones.</p>
+}
+else
+{
+    <p>@Model.AvailableRooms de @Model.TotalRooms disponibles. Precio desde <strong>@Model.MinPrice €</strong></p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Número</th>
+                <th>Capacidad</th>
+                <th>Precio/noche</th>
+                <th>Disponible</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var room in Model.Hotel.Rooms.OrderBy(r => r.Number))
+            {
+                <tr>
+                    <td>@room.Number</td>
+                    <td>@room.Capacity</td>
+                    <td>@room.Price €</td>
+                    <td>@(room.Available ? "Sí" : "No")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<a class="btn btn-secondary" asp-action="Index">Volver al listado</a>
