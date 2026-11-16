@@ -60,4 +60,23 @@ public class HotelsController : Controller
 
         return View(viewModel);
     }
+
+    [HttpGet]
+    public IActionResult Create()
+    {
+        var hotel = new Hotel { Active = true };
+
+        return View("Form", hotel);
+    }
+    
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Save(Hotel hotel)
+    {
+        context.Hotels.Add(hotel);
+        context.SaveChanges();
+
+        TempData["Message"] = "Hotel guardado correctamente.";
+        return RedirectToAction("Details", new { id = hotel.Id });
+    }
 }
