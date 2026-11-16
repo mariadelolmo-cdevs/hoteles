@@ -3,7 +3,11 @@
     ViewData["Title"] = "Hoteles";
 }
 
-<h1>Hoteles</h1>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="mb-0">Hoteles</h1>
+    <a class="btn btn-success" asp-action="Create">Nuevo hotel</a>
+</div>
+
 <p>Hay @Model.Count hoteles.</p>
 
 <form method="get" asp-action="Index" class="row g-2 align-items-end mb-3">
