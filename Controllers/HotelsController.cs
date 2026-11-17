@@ -105,4 +105,41 @@ public class HotelsController : Controller
         TempData["Message"] = "Hotel guardado correctamente.";
         return RedirectToAction("Details", new { id = hotel.Id });
     }
+
+    // desactivar un hotel (borrado lógico)
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Deactivate(int id)
+    {
+        var hotel = context.Hotels.Find(id);
+        
+        if (hotel == null)
+        {
+            return NotFound();
+        }
+
+        hotel.Active = false;
+        context.SaveChanges();
+
+        TempData["Message"] = "Hotel desactivado.";
+        return RedirectToAction("Details", new {id});
+    }
+
+    // borrar un hotel (borrado real)
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Delete(int id)
+    {
+        var hotel = context.Hotels.Find(id);
+        if (hotel == null)
+        {
+            return NotFound();
+        }
+
+        context.Hotels.Remove(hotel);
+        context.SaveChanges();
+
+        TempData["Message"] = "Hotel borrado.";
+        return RedirectToAction("Index");
+    }
 }
