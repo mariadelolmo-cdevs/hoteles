@@ -68,6 +68,19 @@ public class HotelsController : Controller
 
         return View("Form", hotel);
     }
+
+    [HttpGet]
+    public IActionResult Edit(int id)
+    {
+        var hotel = context.Hotels.Find(id);
+
+        if (hotel == null)
+        {
+            return NotFound();
+        }
+
+        return View("Form", hotel);
+    }
     
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -77,8 +90,16 @@ public class HotelsController : Controller
         {
             return View("Form", hotel);
         }
-        
-        context.Hotels.Add(hotel);
+
+        if (hotel.Id == 0)
+        {
+            context.Hotels.Add(hotel);
+        }
+        else
+        {
+            context.Hotels.Update(hotel);
+        }
+
         context.SaveChanges();
 
         TempData["Message"] = "Hotel guardado correctamente.";
