@@ -73,6 +73,11 @@ public class HotelsController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult Save(Hotel hotel)
     {
+        if (!ModelState.IsValid)
+        {
+            return View("Form", hotel);
+        }
+        
         context.Hotels.Add(hotel);
         context.SaveChanges();
 
